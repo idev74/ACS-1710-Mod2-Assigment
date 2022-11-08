@@ -15,7 +15,7 @@
 ################################################################################
 
 import unittest
-
+import random
 from app import app
 
 class TestApp(unittest.TestCase):
@@ -106,9 +106,10 @@ class TestApp(unittest.TestCase):
         self.assertIn('result is: 2', result_page_text)
 
     def test_horoscope_aries(self):
+        random.seed(1)
+        
         res = app.test_client().get('/horoscope_results?users_name=Ducky&horoscope_sign=aries')
         self.assertEqual(res.status_code, 200)
-        random.seed(1)
 
         result_page_text = res.get_data(as_text=True)
         self.assertIn('Ducky', result_page_text)
@@ -117,9 +118,10 @@ class TestApp(unittest.TestCase):
         self.assertIn('18', result_page_text)
 
     def test_horoscope_taurus(self):
-        res = app.test_client().get('/horoscope_results?users_name=Moxie&horoscope_sign=aries')
-        self.assertEqual(res.status_code, 200)
         random.seed(3)
+        
+        res = app.test_client().get('/horoscope_results?users_name=Moxie&horoscope_sign=taurus')
+        self.assertEqual(res.status_code, 200)
 
         result_page_text = res.get_data(as_text=True)
         self.assertIn('Moxie', result_page_text)
